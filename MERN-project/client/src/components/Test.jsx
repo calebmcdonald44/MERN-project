@@ -14,6 +14,7 @@ function Test() {
     return (
         <div className='Test'>
             <h1>Socket Test</h1>
+            <p>Hello</p>
         </div>
     )
 }
