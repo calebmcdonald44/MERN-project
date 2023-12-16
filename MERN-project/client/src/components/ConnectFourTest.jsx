@@ -11,7 +11,9 @@ const ConnectFourTest = () => {
                                         ])
 
 
-    const winCheck = (boardCopy) => {
+    const winCheck = (boardCopy, color) => {
+        // once sockets installed, add check that looks only at color of player who just went
+        // use returns to exit entire function when win condition is met to save runtime
         // horizonal check
         for(let i = 5; i >= 0; i--) {
             let count = 1
@@ -19,7 +21,7 @@ const ConnectFourTest = () => {
                 if(boardCopy[i][j] === '-') {
                     count = 1
                 }
-                if(boardCopy[i][j] === boardCopy[i][j-1]){
+                else if(boardCopy[i][j] === boardCopy[i][j-1]){
                     count += 1
                     if(count === 4) {
                         console.log(`${boardCopy[i][j]} wins!`)
@@ -32,9 +34,9 @@ const ConnectFourTest = () => {
         let column = 0
         let count = 1
         for(let i = 4; column < 7; i--) {
-            if(boardCopy[i][column] === '-' || i < 0) {
+            if(i < 0 || boardCopy[i][column] === '-') {
                 count = 1
-                i = 4
+                i = 5
                 column += 1
             }
             else if(boardCopy[i][column] === boardCopy[i+1][column]) {
@@ -46,15 +48,30 @@ const ConnectFourTest = () => {
             }
         }
         // diagonal check
-        
+        for(let i = 5; i >=3; i--) {
+            for(let j = 0; j < 7; j++) {
+                if(boardCopy[i][j] !== '-') {
+                    // up and to the right
+                    if(boardCopy[i-1][j+1] === boardCopy[i][j] && boardCopy[i-2][j+2] === boardCopy[i][j] && boardCopy[i-3][j+3] === boardCopy[i][j]){
+                        console.log(`${boardCopy[i][j]} wins!`)
+                        break
+                    }
+                    // up and to the left
+                    else if(boardCopy[i-1][j-1] === boardCopy[i][j] && boardCopy[i-2][j-2] === boardCopy[i][j] && boardCopy[i-3][j-3] === boardCopy[i][j]){
+                        console.log(`${boardCopy[i][j]} wins!`)
+                        break
+                    }
+                }
+            }
+        }
     }
     
-    const makeMove = (column) => {
+    const makeMove = (column, color) => {
         let boardCopy = [...board]
         for(let i = 5; i >= 0; i--) {
             if(board[i][column]==='-') {
                 console.log(i, column)
-                boardCopy[i][column] = 'r'
+                boardCopy[i][column] = color
                 setBoard(boardCopy)
                 winCheck(boardCopy)
                 break
@@ -65,13 +82,13 @@ const ConnectFourTest = () => {
     return (
         <>
             <div className='column-buttons'>
-                <button onClick={() => makeMove(0)}>v</button>
-                <button onClick={() => makeMove(1)}>v</button>
-                <button onClick={() => makeMove(2)}>v</button>
-                <button onClick={() => makeMove(3)}>v</button>
-                <button onClick={() => makeMove(4)}>v</button>
-                <button onClick={() => makeMove(5)}>v</button>
-                <button onClick={() => makeMove(6)}>v</button>
+                <button onClick={() => makeMove(0, 'r')}>v</button>
+                <button onClick={() => makeMove(1, 'r')}>v</button>
+                <button onClick={() => makeMove(2, 'r')}>v</button>
+                <button onClick={() => makeMove(3, 'r')}>v</button>
+                <button onClick={() => makeMove(4, 'r')}>v</button>
+                <button onClick={() => makeMove(5, 'r')}>v</button>
+                <button onClick={() => makeMove(6, 'r')}>v</button>
                 
             </div>
             <div className='blue'>

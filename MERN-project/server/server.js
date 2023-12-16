@@ -13,8 +13,7 @@ require('./config/mongoose.config')
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-// require('./routes/author.routes')(app);
-app.listen(port, () => console.log(`Listening on port: ${port}`) );
+// require('./routes/author.routes')(app);;
 
 io.on("connection", socket => {
     console.log(socket.id)
