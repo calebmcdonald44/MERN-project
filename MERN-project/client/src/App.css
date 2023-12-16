@@ -5,6 +5,33 @@
   text-align: center;
 }
 
+/* OUR CSS */
+.column-buttons {
+  display: flex;
+  width: 420px;
+  justify-content: space-around;
+}
+.blue {
+  margin-top: 10px;
+  background-color: blue;
+}
+.row {
+  display: flex;
+}
+.cell {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-color: rgb(99, 99, 99);
+  margin: 5px;
+}
+.r {
+  background-color: red;
+}
+.b {
+  background-color: black;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
