@@ -30,6 +30,9 @@ io.on("connection", socket => {
 
     socket.on("send_message", (data) => {
         console.log(data)
+        console.log(data.room)
+        console.log(typeof(data.room))
+        console.log(`id: ${socket.id}`)
         socket.to(data.room).emit("receive_message", data)
     });
 

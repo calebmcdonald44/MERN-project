@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
 // import './App.css';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import io, { Socket } from 'socket.io-client'
+
+
+// const socket = io.connect('http://localhost:8000');
+
+
 
 function Chat (props) {
-    const { socket, userName, room } = props;
+    const { socket } = props;
+
+    const { userName, room} = useParams();
 
     const [currentMessage, setCurrentMessage] = useState("");
     const [messageList, setMessageList] = useState([]);
 
-    const sendMessage = async () => {
+    const sendMessage = () => {
         if (currentMessage !== "") {
             const messageData = {
                 room: room,
@@ -16,17 +24,24 @@ function Chat (props) {
                 message: currentMessage
             };
 
-            await socket.emit("send_message", messageData);
-            setMessageList((list) => [...list, messageData]);
+            socket.emit("send_message", messageData);
+            setMessageList((messages) => [...messages, messageData]);
         }
     }
 
+    const receiveMessage =  (data) => {
+        console.log(data);
+        setMessageList((messages) => [...messages, data]);
+    }
+
     useEffect(() => {
-        socket.on("receive_message", (data) => {
-            console.log(data);
-            setMessageList((list) => [...list, data]);
-        })
-    })
+        console.log("Triggered")
+        socket.on("receive_message", receiveMessage)
+
+        return () => {
+            socket.off("receive_message", receiveMessage)
+        }
+    }, [])
 
 
     return (
