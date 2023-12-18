@@ -17,7 +17,6 @@ const server = app.listen(port, () =>
 // app.listen(port, () => console.log(`Listening on port: ${port}`) );
 
 const io = require('socket.io')(server, {cors: true})
-app.listen(port, () => console.log(`Listening on port: ${port}`) );
 
 io.on("connection", socket => {
     console.log(socket.id)
