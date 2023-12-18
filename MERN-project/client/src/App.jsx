@@ -5,11 +5,10 @@ import {
   Route,
   Link
 } from "react-router-dom";
-// import Home from './views/Home.jsx'
-import Test from './views/TestView.jsx'
-import ConnectFourTestView from './views/ConnectFourTestView.jsx'
-// import Update from './views/Update.jsx'
 import axios from 'axios'
+import ConnectForm from './views/ConnectForm.jsx';
+import ConnectFourTestView from './views/ConnectFourTestView.jsx';
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,7 +16,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<Test/>}></Route>
+        <Route path='/' element={<ConnectForm/>}></Route>
         <Route path='/connect-four' element={<ConnectFourTestView />}></Route>
       </Routes>
     </>
