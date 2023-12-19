@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client'
+import { useNavigate } from 'react-router-dom';
+
+// TO DO
+// - use sockets to change winState for both players when game ends
+// - use sockets to get name of the opponent
+// - reformat player stats?
+// - create "waiting..." page while waiting for other player to join
+// - make chat cleaner/able to be minimized
+// - style board
 
 const ConnectFourTest = (props) => {
-    const { socket } = props;
-    const { userName } = props;
-    const { room } = props
+    const { socket, userName, room } = props;
 
     const [currentColor, setCurrentColor] = useState("r");
     const [playerColor, setPlayerColor] = useState("")
+    const [ winState, setWinState ] = useState(false)
+    const navigate = useNavigate()
 
+    // assigning color upon joining room
     useEffect(() => {
         socket.on("color_assigned", (data) => {
             setPlayerColor(data)
@@ -20,11 +30,12 @@ const ConnectFourTest = (props) => {
     const [board, setBoard] = useState([["-", "-", "-", "-", "-", "-", "-"],
                                         ["-", "-", "-", "-", "-", "-", "-"],
                                         ["-", "-", "-", "-", "-", "-", "-"],
-                                        ["-", "-", "-", "-", "-", "-", "b"],
-                                        ["-", "-", "-", "-", "-", "b", "b"],
-                                        ["-", "-", "-", "-", "b", "b", "b"],
+                                        ["-", "-", "-", "-", "-", "-", "-"],
+                                        ["-", "-", "-", "-", "-", "-", "-"],
+                                        ["-", "-", "-", "-", "-", "-", "-"],
                                         ])
-
+    
+    // checking for any instances of 4 in a row
     const winCheck = (boardCopy, color) => {
         // once sockets installed, add check that looks only at color of player who just went
         // use returns to exit entire function when win condition is met to save runtime
@@ -39,6 +50,7 @@ const ConnectFourTest = (props) => {
                     count += 1
                     if(count === 4) {
                         console.log(`${boardCopy[i][j]} wins!`)
+                        setWinState(true)
                         break
                     }
                 }
@@ -57,6 +69,7 @@ const ConnectFourTest = (props) => {
                 count +=1
                 if(count === 4) {
                     console.log(`${boardCopy[i][column]} wins!`)
+                    setWinState(true)
                     break
                 }
             }
@@ -71,18 +84,20 @@ const ConnectFourTest = (props) => {
                     // up and to the right
                     if(boardCopy[i-1][j+1] === boardCopy[i][j] && boardCopy[i-2][j+2] === boardCopy[i][j] && boardCopy[i-3][j+3] === boardCopy[i][j]){
                         console.log(`${boardCopy[i][j]} wins!`)
+                        setWinState(true)
                         break
                     }
                     // up and to the left
                     else if(boardCopy[i-1][j-1] === boardCopy[i][j] && boardCopy[i-2][j-2] === boardCopy[i][j] && boardCopy[i-3][j-3] === boardCopy[i][j]){
                         console.log(`${boardCopy[i][j]} wins!`)
+                        setWinState(true)
                         break
                     }
                 }
             }
         }
     }
-    
+    // updating board with most recent move
     const makeMove = (column, color) => {
         let boardCopy = [...board]
         for(let i = 5; i >= 0; i--) {
@@ -100,6 +115,7 @@ const ConnectFourTest = (props) => {
         color == "r" ? setCurrentColor("b") : setCurrentColor("r");
     }
 
+    // emits move to server to make sure both players' DOMS are properly updated
     const sendMove = (column, color) => {
         if (currentColor == playerColor) {
             const moveData = {
@@ -117,12 +133,14 @@ const ConnectFourTest = (props) => {
         }
     }
 
+    // receives move from server
     const receiveMove = (data) => {
         console.log(data)
         makeMove(data.column, data.color, data.currentColor)
         changeCurrentColor(data.currentColor)
     }
 
+    // turns off socket after move is received
     useEffect(() => {
         socket.on("receive_move", receiveMove)
 
@@ -131,30 +149,66 @@ const ConnectFourTest = (props) => {
         }
     }, [])
 
-
-
-    return (
-        <div className='connect-four'>
-            <div className='column-buttons'>
-                <button onClick={() => sendMove(0, playerColor)}>v</button>
-                <button onClick={() => sendMove(1, playerColor)}>v</button>
-                <button onClick={() => sendMove(2, playerColor)}>v</button>
-                <button onClick={() => sendMove(3, playerColor)}>v</button>
-                <button onClick={() => sendMove(4, playerColor)}>v</button>
-                <button onClick={() => sendMove(5, playerColor)}>v</button>
-                <button onClick={() => sendMove(6, playerColor)}>v</button>
-                
-            </div>
-            <div className='blue'>
-                {board.map((row, i) => 
-                    <div className='row' key={i}>
-                        {row.map((cell, j) => 
-                            <div key={j} className={`cell ${cell}`}></div>
+    // rendering game board if no one has won yet
+    if(winState === false) {
+        return (
+            <div className='flex space-evenly'>
+                <div className={`flex-column player-stats ${playerColor===currentColor ? 'selected' : 'zzzzz'}`}>
+                    <h3 className={`${playerColor}-text`}>{userName}</h3>
+                    <h1>W's</h1>
+                    <h3>wins</h3>
+                </div>
+                <div className='connect-four'>
+                    <h1 className='turn-display'><span className={`${currentColor}-text`}>{currentColor === 'r' ? 'Red' : 'Black'}</span> to move</h1>
+                    <div className='column-buttons'>
+                        <button onClick={() => sendMove(0, playerColor)}>v</button>
+                        <button onClick={() => sendMove(1, playerColor)}>v</button>
+                        <button onClick={() => sendMove(2, playerColor)}>v</button>
+                        <button onClick={() => sendMove(3, playerColor)}>v</button>
+                        <button onClick={() => sendMove(4, playerColor)}>v</button>
+                        <button onClick={() => sendMove(5, playerColor)}>v</button>
+                        <button onClick={() => sendMove(6, playerColor)}>v</button>
+                        
+                    </div>
+                    <div className='blue'>
+                        {board.map((row, i) => 
+                            <div className='row' key={i}>
+                                {row.map((cell, j) => 
+                                    <div key={j} className={`cell ${cell}`}></div>
+                                )}
+                            </div>
                         )}
                     </div>
-                )}
+                </div>
+                <div className={`flex-column player-stats ${playerColor===currentColor ? 'selected' : 'zzzzz'}`}>
+                    <h3 className={`${playerColor}-text`}>{userName}</h3>
+                    <h1>W's</h1>
+                    <h3>wins</h3>
+                </div>
             </div>
-        </div>
-    )
+        )
+    // rendering rematch options once game has been completed
+    }
+    else if(winState===true) {
+        return (
+            <div className='connect-four'>
+                <h1><span className={currentColor === 'r' ? 'b-text' : 'r-text'}>{currentColor === 'r' ? 'Black' : 'Red'}</span> wins!</h1>
+                <div className='blue'>
+                        {board.map((row, i) => 
+                            <div className='row' key={i}>
+                                {row.map((cell, j) => 
+                                    <div key={j} className={`cell ${cell}`}></div>
+                                )}
+                            </div>
+                        )}
+                </div>
+                <div className='flex space-around'>
+                    {/* have rematch clear board and winState for both players */}
+                    <button>Rematch</button>
+                    <button onClick={() => navigate('/')}>Find New Game</button>
+                </div>
+            </div>
+        )
+    }
 }
 export default ConnectFourTest

@@ -27,6 +27,10 @@
   display: flex;
   justify-content: space-around;
 }
+.space-evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
 
 /* GENERAL TAGS */
 body {
@@ -68,7 +72,11 @@ span {
 
 /* CONNECT FOUR BOARD */
 .connect-four {
-  margin: 0 auto;
+  margin: 0;
+  text-align: center;
+}
+.connect-four > h1 {
+  color: white;
 }
 .column-buttons {
   display: flex;
@@ -95,6 +103,33 @@ span {
 }
 .b {
   background-color: black;
+}
+.r-text {
+  color: red;
+  font-weight: 900;
+}
+.b-text {
+  color: black;
+  font-weight: 900;
+}
+.turn-display {
+  color: white;
+  font-size: 55px;
+  margin-bottom: 25px;
+}
+.player-stats {
+  height: fit-content;
+  margin-top: 180px;
+  text-align: center;
+  color: white;
+  gap: 40px;
+  padding: 5px;
+}
+.player-stats > h1 {
+  font-size: 100px;
+}
+.selected {
+  background-color: rgba(160, 160, 160, 0.4);
 }
 
 
