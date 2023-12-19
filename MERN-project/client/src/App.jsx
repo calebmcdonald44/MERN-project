@@ -14,11 +14,14 @@ import io from 'socket.io-client'
 function App() {
   const [socket] = useState(() => io(":8000"));
 
+  const [userName, setUserName] = useState("");
+  const [room, setRoom] = useState("");
+
   return (
     <>
-      <div class="nav-bar space-between">
+      <div className="nav-bar space-between">
         <h1>Connect<span>Four</span></h1>
-        <div class="nav-items flex">
+        <div className="nav-items flex">
             <a href=""></a>
             <a href=""></a>
             <a href=""></a>
@@ -26,8 +29,8 @@ function App() {
       </div>
       <div className="content">
         <Routes>
-          <Route path='/' element={<ConnectForm socket={socket}/>}></Route>
-          <Route path='/connect-four/:userName/:room' element={<ConnectFourTestView socket={socket}/>}></Route>
+          <Route path='/' element={<ConnectForm socket={socket} userName={userName} setUserName={setUserName} room={room} setRoom={setRoom}/>}></Route>
+          <Route path='/connect-four/:userName/:room' element={<ConnectFourTestView socket={socket} userName={userName} room={room}/>}></Route>
         </Routes>
       </div>
     </>

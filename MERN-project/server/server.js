@@ -20,21 +20,31 @@ const io = new Server(server, {
     }
 })
 
+const connections = {};
+
 io.on("connection", socket => {
     console.log(socket.id);
 
     socket.on("join_room", (data) => {
         socket.join(data)
         console.log(`User: ${socket.id} joined room: ${data}`);
+
+        connections[data] = connections[data] ?? 0
+        connections[data]++
+
+        socket.emit("color_assigned", connections[data] == 1 ? "r" : "b")
     });
 
     socket.on("send_message", (data) => {
         console.log(data)
-        console.log(data.room)
-        console.log(typeof(data.room))
         console.log(`id: ${socket.id}`)
         socket.to(data.room).emit("receive_message", data)
     });
+
+    socket.on("player_move", (data) => {
+        console.log(data)
+        socket.to(data.room).emit("receive_move", data)
+    })
 
     socket.on("disconnect", () => {
         console.log("User disconnected", socket.id);

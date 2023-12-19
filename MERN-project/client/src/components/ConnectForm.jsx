@@ -7,9 +7,14 @@ import { useNavigate } from 'react-router-dom';
 const ConnectForm = (props) => {
     const { socket } = props;
 
+    const { userName } = props;
+    const { setUserName } = props;
+
+    const { room } = props;
+    const { setRoom } = props;
+
+
     const navigate = useNavigate();
-    const [userName, setUserName] = useState("");
-    const [room, setRoom] = useState("");
 
     const joinRoom = () => {
         if (userName !== "" && room !== "") {

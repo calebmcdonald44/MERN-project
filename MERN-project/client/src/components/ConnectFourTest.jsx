@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import io from 'socket.io-client'
 
-const ConnectFourTest = () => {
+const ConnectFourTest = (props) => {
+    const { socket } = props;
+    const { userName } = props;
+    const { room } = props
+
+    const [currentColor, setCurrentColor] = useState("r");
+    const [playerColor, setPlayerColor] = useState("")
+
+    useEffect(() => {
+        socket.on("color_assigned", (data) => {
+            setPlayerColor(data)
+            console.log(data)
+        })
+    })
+
     const [winner, setWinner] = useState(false)
     const [board, setBoard] = useState([["-", "-", "-", "-", "-", "-", "-"],
                                         ["-", "-", "-", "-", "-", "-", "-"],
@@ -9,7 +24,6 @@ const ConnectFourTest = () => {
                                         ["-", "-", "-", "-", "-", "b", "b"],
                                         ["-", "-", "-", "-", "b", "b", "b"],
                                         ])
-
 
     const winCheck = (boardCopy, color) => {
         // once sockets installed, add check that looks only at color of player who just went
@@ -82,16 +96,53 @@ const ConnectFourTest = () => {
         }
     }
 
+    const changeCurrentColor = (color) => {
+        color == "r" ? setCurrentColor("b") : setCurrentColor("r");
+    }
+
+    const sendMove = (column, color) => {
+        if (currentColor == playerColor) {
+            const moveData = {
+                room: room,
+                column: column,
+                color: color,
+                currentColor: currentColor
+            }
+    
+            socket.emit("player_move", moveData);
+            makeMove(column, color)
+            changeCurrentColor(currentColor)
+        } else {
+            console.log("Shut up")
+        }
+    }
+
+    const receiveMove = (data) => {
+        console.log(data)
+        makeMove(data.column, data.color, data.currentColor)
+        changeCurrentColor(data.currentColor)
+    }
+
+    useEffect(() => {
+        socket.on("receive_move", receiveMove)
+
+        return () => {
+            socket.off("receive_move", receiveMove)
+        }
+    }, [])
+
+
+
     return (
         <div className='connect-four'>
             <div className='column-buttons'>
-                <button onClick={() => makeMove(0, 'r')}>v</button>
-                <button onClick={() => makeMove(1, 'r')}>v</button>
-                <button onClick={() => makeMove(2, 'r')}>v</button>
-                <button onClick={() => makeMove(3, 'r')}>v</button>
-                <button onClick={() => makeMove(4, 'r')}>v</button>
-                <button onClick={() => makeMove(5, 'r')}>v</button>
-                <button onClick={() => makeMove(6, 'r')}>v</button>
+                <button onClick={() => sendMove(0, playerColor)}>v</button>
+                <button onClick={() => sendMove(1, playerColor)}>v</button>
+                <button onClick={() => sendMove(2, playerColor)}>v</button>
+                <button onClick={() => sendMove(3, playerColor)}>v</button>
+                <button onClick={() => sendMove(4, playerColor)}>v</button>
+                <button onClick={() => sendMove(5, playerColor)}>v</button>
+                <button onClick={() => sendMove(6, playerColor)}>v</button>
                 
             </div>
             <div className='blue'>

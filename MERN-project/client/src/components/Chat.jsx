@@ -48,7 +48,7 @@ function Chat (props) {
         <>
             <div className='chatBox'>
                 <div className='chat-header'>
-                    <p>REACT Chat</p>
+                    <p>Chat</p>
                 </div>
                     <div className='chat-body scroll'>
                         {messageList.map((messageContent, idx) => {
@@ -60,7 +60,7 @@ function Chat (props) {
                         })}
                     </div>
                 <div className='chat-footer'>
-                    <input className="message" type="text" placeholder="Message here..." onChange={(e) => {
+                    <input className="message" type="text" placeholder="Write your message here..." onChange={(e) => {
                         setCurrentMessage(e.target.value)
                     }}
                     onKeyDown={(e) => {
