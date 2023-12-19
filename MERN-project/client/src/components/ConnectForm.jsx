@@ -22,11 +22,14 @@ const ConnectForm = (props) => {
     return (
         <>
             <div className='logIn'>
-                <div className='inputs'>
+                <h1>Create a username to be paired with a random opponent!</h1>
+                <div className='inputs flex-column'>
                     <input className="input" type="text" placeholder="Name..." onChange={(e) => {setUserName(e.target.value)}}/>
                     <input className="input" type="text" placeholder="Room..." onChange={(e) => {setRoom(e.target.value)}}/>
                 </div>
-                <button className='logBtn' onClick={() => joinRoom()}>Enter Game</button>
+                <div className='button flex'>
+                    <button className='logBtn' onClick={() => joinRoom()}>Enter Game</button>
+                </div>
             </div>
         </>
     )

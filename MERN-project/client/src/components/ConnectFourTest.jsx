@@ -83,7 +83,7 @@ const ConnectFourTest = () => {
     }
 
     return (
-        <>
+        <div className='connect-four'>
             <div className='column-buttons'>
                 <button onClick={() => makeMove(0, 'r')}>v</button>
                 <button onClick={() => makeMove(1, 'r')}>v</button>
@@ -103,7 +103,7 @@ const ConnectFourTest = () => {
                     </div>
                 )}
             </div>
-        </>
+        </div>
     )
 }
 export default ConnectFourTest

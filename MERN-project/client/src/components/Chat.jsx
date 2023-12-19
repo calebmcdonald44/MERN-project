@@ -60,7 +60,7 @@ function Chat (props) {
                         })}
                     </div>
                 <div className='chat-footer'>
-                    <input className="message" type="text" placeholder="Write your message here..." onChange={(e) => {
+                    <input className="message" type="text" placeholder="Message here..." onChange={(e) => {
                         setCurrentMessage(e.target.value)
                     }}
                     onKeyDown={(e) => {
