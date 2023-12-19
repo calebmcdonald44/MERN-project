@@ -13,22 +13,39 @@ const ConnectForm = (props) => {
     const { room } = props;
     const { setRoom } = props;
 
+    const [errorsArray, setErrorsArray] = useState([]);
 
+    
     const navigate = useNavigate();
-
+    
     const joinRoom = () => {
-        if (userName !== "" && room !== "") {
+        const errors = [];
+        
+        if (userName.length < 1) {
+            errors.push("You must input a user name.")
+        }
+        if (room < 1) {
+            errors.push("You must set a room id")
+        }
+
+        setErrorsArray(errors)
+
+        if (errors.length === 0) {
             socket.emit("join_room", room)
             console.log(room)
             navigate(`/connect-four/${userName}/${room}`)
         }
+    
     }
-
-    return (
+        
+        return (
         <>
             <div className='logIn'>
-                <h1>Create a username to be paired with a random opponent!</h1>
+                <h1>Create a username and a input a room number!</h1>
                 <div className='inputs flex-column'>
+                    {errorsArray.map((error, idx) => {
+                        return <p key={idx} style={{color: "red"}}>{error}</p>
+                    })}
                     <input className="input" type="text" placeholder="Name..." onChange={(e) => {setUserName(e.target.value)}}/>
                     <input className="input" type="text" placeholder="Room..." onChange={(e) => {setRoom(e.target.value)}}/>
                 </div>
@@ -37,6 +54,6 @@ const ConnectForm = (props) => {
                 </div>
             </div>
         </>
-    )
+        )
 }
 export default ConnectForm
