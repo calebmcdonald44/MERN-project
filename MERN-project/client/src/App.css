@@ -155,6 +155,15 @@ span {
   background-color: rgba(160, 160, 160, 0.4);
 }
 
+.buttonDiv {
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.buttonDiv > button {
+  width: 156px;
+}
 
 /* FORM */
 .logIn {

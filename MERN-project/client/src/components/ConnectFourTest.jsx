@@ -3,12 +3,8 @@ import io from 'socket.io-client'
 import { useNavigate } from 'react-router-dom';
 
 // TO DO
-// - use sockets to change winState for both players when game ends
-// - use sockets to get name of the opponent
-// - reformat player stats?
 // - create "waiting..." page while waiting for other player to join
 // - make chat cleaner/able to be minimized
-// - style board
 
 const ConnectFourTest = (props) => {
     const { socket, userName, room } = props;
@@ -73,6 +69,8 @@ const ConnectFourTest = (props) => {
                         setWinState(true)
                         break
                     }
+                } else {
+                    count = 1;
                 }
             }
         }
@@ -222,7 +220,7 @@ const ConnectFourTest = (props) => {
                             </div>
                         )}
                 </div>
-                <div className='flex space-around'>
+                <div className='flex buttonDiv'>
                     {/* have rematch clear board and winState for both players */}
                     <button>Rematch</button>
                     <button onClick={() => navigate('/')}>Find New Game</button>
