@@ -4,7 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 // TO DO
 // - create "waiting..." page while waiting for other player to join
-// - make chat cleaner/able to be minimized
+// - rematch functionality
+// - fix chat scroll?/notification numbers
+// - profit $$$
+// - play a game of connect four for the ages
 
 const ConnectFourTest = (props) => {
     const { socket, userName, room } = props;
@@ -179,14 +182,13 @@ const ConnectFourTest = (props) => {
                 <div className='connect-four'>
                     <h1 className='turn-display'><span className={`${currentColor}-text`}>{currentColor === 'r' ? 'Red' : 'Black'}</span> to move</h1>
                     <div className='column-buttons'>
-                        <button onClick={() => sendMove(0, playerColor)}>v</button>
-                        <button onClick={() => sendMove(1, playerColor)}>v</button>
-                        <button onClick={() => sendMove(2, playerColor)}>v</button>
-                        <button onClick={() => sendMove(3, playerColor)}>v</button>
-                        <button onClick={() => sendMove(4, playerColor)}>v</button>
-                        <button onClick={() => sendMove(5, playerColor)}>v</button>
-                        <button onClick={() => sendMove(6, playerColor)}>v</button>
-                        
+                        <div onClick={() => sendMove(0, playerColor)}><p className={currentColor===playerColor ? 'arrow-move' : 'arrow'}>↓</p></div>
+                        <div onClick={() => sendMove(1, playerColor)}><p className={currentColor===playerColor ? 'arrow-move' : 'arrow'}>↓</p></div>
+                        <div onClick={() => sendMove(2, playerColor)}><p className={currentColor===playerColor ? 'arrow-move' : 'arrow'}>↓</p></div>
+                        <div onClick={() => sendMove(3, playerColor)}><p className={currentColor===playerColor ? 'arrow-move' : 'arrow'}>↓</p></div>
+                        <div onClick={() => sendMove(4, playerColor)}><p className={currentColor===playerColor ? 'arrow-move' : 'arrow'}>↓</p></div>
+                        <div onClick={() => sendMove(5, playerColor)}><p className={currentColor===playerColor ? 'arrow-move' : 'arrow'}>↓</p></div>
+                        <div onClick={() => sendMove(6, playerColor)}><p className={currentColor===playerColor ? 'arrow-move' : 'arrow'}>↓</p></div>
                     </div>
                     <div className='blue'>
                         {board.map((row, i) => 

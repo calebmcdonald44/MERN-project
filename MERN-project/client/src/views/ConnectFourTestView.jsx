@@ -10,7 +10,7 @@ const ConnectFourTestView = (props) => {
     return (
         <>
             <ConnectFourTest socket={socket} userName={userName} room={room}></ConnectFourTest>
-            <div className='chat-window'>
+            <div>
                 <Chat socket={socket}/>
             </div>
         </>

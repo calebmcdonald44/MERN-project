@@ -61,7 +61,7 @@ span {
 }
 .content {
   height: 83vh;
-  min-width: 700px;
+  min-width: 864px;
   margin: 0 20%;
   background-color: rgb(0, 0, 0, .8);
   display: flex;
@@ -94,9 +94,39 @@ span {
   padding-left: 5px;
   padding-right: 5px;
 }
-.column-buttons > button {
+.column-buttons > div {
   width: 50px;
+  height: 50px;
+  text-align: center;
   margin: 0;
+  cursor: pointer;
+  color: white;
+}
+.arrow {
+  font-size: 30px;
+  padding-top: 8px;
+  padding-bottom: 5px;
+}
+.arrow-move {
+  font-size: 30px;
+  padding-top: 8px;
+  padding-bottom: 5px;
+}
+.arrow-move:hover {
+  animation: bounce 1s linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes bounce {
+  50%,100%,to{
+    transform: translateY(0)
+  }
+  25%{
+    transform: translateY(-15px);
+  }
+  75%{
+    transform: translateY(-15px);
+  }
 }
 
 .blue {
@@ -153,6 +183,7 @@ span {
 }
 .selected {
   background-color: rgba(160, 160, 160, 0.4);
+  box-shadow: 3px 3px 3px black;
 }
 
 .buttonDiv {
@@ -191,24 +222,64 @@ span {
 }
 
 /* CHAT */
+.chat-minimized {
+  position: fixed;
+  bottom: 0px;
+  right: 50px;
+  height: 35px;
+  width: 232px;
+  background-color: rgb(32, 32, 189);
+  color: white;
+  border: 2px black solid;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.chat-minimized > * {
+  /* height: fit-content; */
+  margin: auto 5px;
+}
+
+.notification {
+  height: 20px;
+  width: 20px;
+  color: white;
+  border: black 1px solid;
+  border-radius: 50%;
+  background-color: gray;
+  text-align: center;
+}
+.notification-unread {
+  height: 20px;
+  width: 20px;
+  color: white;
+  border: black 1px solid;
+  border-radius: 50%;
+  background-color: red;
+  text-align: center;
+}
+
 .chat-window {
   display: flex;
   flex-direction: column-reverse;
   height: 250px;
-  padding: 10px;
-  background-color: white;
+  padding: 5px 10px 10px 10px;
+  background-color: gray;
   border: 2px black solid;
-  border-radius: 4px;
+  border-radius: 8px;
   position: fixed;
   bottom: 0px;
   right: 50px;
   align-items: end;
+  width: 213px;
+  max-width: 213px;
 }
 
 
 .chatBox {
   background-color: white;
-  height:600px;
+  height: 600px;
   border: 2px solid black;
   border-radius: 10px;
   display: flex;
@@ -216,11 +287,18 @@ span {
   align-items: center;
   padding: 3px;
 }
+.chat-header {
+  background-color: rgb(32, 32, 189);
+  width: 98.5%;
+  color: white;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 8px;
+  margin-bottom: 1px;
+  cursor: pointer;
+}
 
-.chatBox .chat-body .message .message-content {
-  min-height: 40px;
-  max-width: 120px;
-  background-color: #43a047;
+.chatBox .chat-body .message-content {
   border-radius: 5px;
   color: white;
   display: flex;
@@ -237,57 +315,78 @@ span {
 .chat-body {
   flex: 90%;
   width: 100%;
+  align-items: flex-end;
+  max-height: 180px;
 }
+/* .chat-body > #you {
+  align-items: right;
+} */
 
 .chat-footer {
-  flex: 10%;
+  /* flex: 10%; */
+  border-top: 2px solid black;
+  padding: 2px;
   width: 100%;
   display: flex;
   flex-direction: row;
+  gap: 5px;
 }
 
 .message {
-  flex: 80%;
+  flex: 85%;
   border: none;
+  height: 30px;
 }
 
 .sendBtn {
-  flex: 20%;
+  flex: 15%;
   height: 100%;
-}
+  height: 30px;
+  font-size: 15px;
+  padding: 2px 5px;
+} 
 
 .message-content {
-  width: auto;
+  width: 100%;
   height: auto;
-  min-height: 40px;
-  max-width: 60px;
-
+  /* max-width: 60px; */
   border-radius: 5px;
   color: white;
   display: flex;
   align-items: center;
-  margin-right: 5px;
-  margin-left: 5px;
-  padding-right: 5px;
+  /* padding-right: 5px;
   padding-left: 5px;
   overflow-wrap: break-word;
+  word-break: break-word; */
+}
+.message-content > p {
+  color: white;
+  padding: 3px 5px;
+  /* width: fit-content;
+  height: fit-content; */
+  overflow-wrap: break-word;
   word-break: break-word;
+  max-width: 100%;
+}
+
+#you, #other {
+  margin-top: 1px;
+  margin-bottom: 1px;
+  width: fit-content;
+  max-width: 90%;
 }
 
 #you {
-  justify-content: flex-start;
-  background-color: #43a047;
-  margin-left: 75%;
-}
-
-#you .message-content {
   justify-content: flex-end;
+  background-color: #43a047;
+  margin-left: 10%;
+  /* margin-left: 10%; */
 }
 
 #other {
-  justify-content: flex-end;
   background-color: cornflowerblue;
   justify-content: flex-start;
+  margin-right: 10%;
 }
 
 .scroll {
