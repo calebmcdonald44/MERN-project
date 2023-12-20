@@ -26,14 +26,19 @@ io.on("connection", socket => {
     console.log(socket.id);
 
     socket.on("join_room", (data) => {
-        socket.join(data)
-        console.log(`User: ${socket.id} joined room: ${data}`);
+        socket.join(data.room)
+        console.log(`User: ${socket.id} joined room: ${data.room}`);
 
-        connections[data] = connections[data] ?? 0
-        connections[data]++
+        connections[data.room] = connections[data.room] ?? 0
+        connections[data.room]++
 
-        socket.emit("color_assigned", connections[data] == 1 ? "r" : "b")
+        socket.to(data.room).emit("receive_player_data", data.userName)
+        socket.emit("color_assigned", connections[data.room] == 1 ? "r" : "b")
     });
+
+    socket.on("emit_again", (data) => {
+        socket.to(data.room).emit("receive_player_data", data.userName)
+    })
 
     socket.on("send_message", (data) => {
         console.log(data)

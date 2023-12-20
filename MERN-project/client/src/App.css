@@ -75,19 +75,39 @@ span {
   margin: 0;
   text-align: center;
 }
+
+.connect-four > .blue {
+  margin: 0 auto;
+}
+
 .connect-four > h1 {
   color: white;
 }
+
 .column-buttons {
   display: flex;
   width: 420px;
   justify-content: space-around;
+  /* margin-left: 2px; */
+  margin-bottom: 10px;
+  /* gap: 10px; */
+  padding-left: 5px;
+  padding-right: 5px;
 }
+.column-buttons > button {
+  width: 50px;
+  margin: 0;
+}
+
 .blue {
   margin-top: 10px;
-  background-color: blue;
+  background-color: rgba(3, 3, 255, 0.773);
   width: fit-content;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 6px 6px 10px black;
 }
+
 .row {
   display: flex;
 }
@@ -95,14 +115,17 @@ span {
   height: 50px;
   width: 50px;
   border-radius: 50%;
-  background-color: rgb(99, 99, 99);
+  background-color: rgb(53, 53, 53);
   margin: 5px;
+  box-shadow: inset 4px 4px 4px black;
 }
 .r {
   background-color: red;
+  box-shadow: inset 2px 3px 4px black;
 }
 .b {
-  background-color: black;
+  background-color: rgb(22, 22, 22);
+  box-shadow: inset 2px 3px 4px black;
 }
 .r-text {
   color: red;

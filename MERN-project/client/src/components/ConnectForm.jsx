@@ -1,9 +1,6 @@
 import React, { useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 
-
-// const socket = io.connect('http://localhost:8000');
-
 const ConnectForm = (props) => {
     const { socket } = props;
 
@@ -30,8 +27,13 @@ const ConnectForm = (props) => {
 
         setErrorsArray(errors)
 
+        const playerData = {
+            room: room,
+            userName: userName
+        }
+
         if (errors.length === 0) {
-            socket.emit("join_room", room)
+            socket.emit("join_room", playerData)
             console.log(room)
             navigate(`/connect-four/${userName}/${room}`)
         }
@@ -52,7 +54,7 @@ const ConnectForm = (props) => {
                 <div className='button flex'>
                     <button className='logBtn' onClick={() => joinRoom()}>Enter Game</button>
                 </div>
-                <p style={{color: "white", marginLeft: "140px", marginTop: "50px"}}>Matchmaking coming soon! (Or when we get around to it.)</p>
+                <p style={{color: "white", marginLeft: "200px", marginTop: "50px"}}>Matchmaking coming soon! (Or when we get around to it.)</p>
             </div>
         </>
         )

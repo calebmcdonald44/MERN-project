@@ -16,7 +16,26 @@ const ConnectFourTest = (props) => {
     const [currentColor, setCurrentColor] = useState("r");
     const [playerColor, setPlayerColor] = useState("")
     const [ winState, setWinState ] = useState(false)
+    const [opponentData, setOpponentData] = useState("")
+
     const navigate = useNavigate()
+
+    const receivePlayerData = (data) => {
+        if (opponentData == "") {
+            console.log(data)
+            setOpponentData(data)
+            console.log(opponentData)
+            socket.emit("emit_again", {room: room, userName: userName})
+        } 
+    }
+
+    useEffect(() => {
+        socket.on("receive_player_data", receivePlayerData)
+
+        return () => [
+            socket.off("receive_player_data", receivePlayerData)
+        ]
+    }, [opponentData])
 
     // assigning color upon joining room
     useEffect(() => {
@@ -25,6 +44,7 @@ const ConnectFourTest = (props) => {
             console.log(data)
         })
     })
+
 
     const [winner, setWinner] = useState(false)
     const [board, setBoard] = useState([["-", "-", "-", "-", "-", "-", "-"],
@@ -180,8 +200,8 @@ const ConnectFourTest = (props) => {
                         )}
                     </div>
                 </div>
-                <div className={`flex-column player-stats ${playerColor===currentColor ? 'selected' : 'zzzzz'}`}>
-                    <h3 className={`${playerColor}-text`}>{userName}</h3>
+                <div className={`flex-column player-stats ${playerColor!==currentColor ? 'selected' : 'zzzzz'}`}>
+                    <h3 className={`${playerColor === "r" ? "b" : "r"}-text`}>{opponentData}</h3>
                     <h1>W's</h1>
                     <h3>wins</h3>
                 </div>
@@ -192,7 +212,7 @@ const ConnectFourTest = (props) => {
     else if(winState===true) {
         return (
             <div className='connect-four'>
-                <h1><span className={currentColor === 'r' ? 'b-text' : 'r-text'}>{currentColor === 'r' ? 'Black' : 'Red'}</span> wins!</h1>
+                <h1 className='turn-display'><span className={currentColor === 'r' ? 'b-text' : 'r-text'}>{currentColor === 'r' ? 'Black' : 'Red'}</span> wins!</h1>
                 <div className='blue'>
                         {board.map((row, i) => 
                             <div className='row' key={i}>
