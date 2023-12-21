@@ -379,8 +379,9 @@ span {
 #you {
   justify-content: flex-end;
   background-color: #43a047;
-  margin-left: 10%;
+  margin-left: 66%;
   /* margin-left: 10%; */
+  width: 50px;
 }
 
 #other {
