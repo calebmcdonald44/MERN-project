@@ -245,7 +245,10 @@ const ConnectFourTest = (props) => {
     // shows a waiting page if no other opponent has joined
     if (opponentData === "") {
         return (
-            <h1>Waiting for opponent</h1>
+            <div className='container'>
+                <h1 className='waiting-message'>Waiting for opponent</h1>
+                <h1 className='waiting-message'><span className='dot1'>.</span><span className='dot2'>.</span><span className='dot3'>.</span></h1>
+            </div>
             )
         }
         

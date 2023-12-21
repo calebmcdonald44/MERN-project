@@ -70,6 +70,65 @@ span {
   padding: 40px 0;
 }
 
+/* WAITING SCREEN  */
+.container {
+  text-align: center;
+  margin: auto auto;
+}
+.waiting-message {
+  margin: auto auto;
+  color: white;
+}
+.dot1, .dot2, .dot3 {
+  color: white;
+}
+.dot1 {
+  animation-name: fade1;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-delay: 2s;
+
+}
+.dot2 {
+  animation-name: fade2;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-delay: 2s;
+
+}
+.dot3 {
+  animation-name: fade3;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-delay: 2s;
+
+}
+
+@keyframes fade1 {
+  from {opacity: 0%;}
+  to {opacity: 100%}
+  33%{
+    opacity: 100%;
+  }
+}
+@keyframes fade2 {
+  from {opacity: 0%;}
+  to {opacity: 100%}
+  33%{
+    opacity: 0%;
+  }
+  66%{
+    opacity: 100%;
+  }
+}
+@keyframes fade3 {
+  from {opacity: 0%;}
+  to {opacity: 100%}
+  66%{
+    opacity: 0%
+  }
+}
+
 /* CONNECT FOUR BOARD */
 .connect-four {
   margin: 0;
