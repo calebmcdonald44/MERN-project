@@ -59,11 +59,13 @@ const ConnectFourTest = (props) => {
         // once sockets installed, add check that looks only at color of player who just went
         // use returns to exit entire function when win condition is met to save runtime
         // horizonal check
+        let blankCount = 0
         for(let i = 5; i >= 0; i--) {
             let count = 1
             for(let j = 1; j < 7; j++) {
                 if(boardCopy[i][j] === '-') {
                     count = 1
+                    blankCount += 1
                 }
                 else if(boardCopy[i][j] === boardCopy[i][j-1]){
                     count += 1
@@ -117,6 +119,9 @@ const ConnectFourTest = (props) => {
                 }
             }
         }
+        if(blankCount === 0 && winState === false) {
+            winState("draw")
+        }
     }
     // updating board with most recent move
     const makeMove = (column, color) => {
@@ -134,6 +139,7 @@ const ConnectFourTest = (props) => {
 
     const changeCurrentColor = (color) => {
         color == "r" ? setCurrentColor("b") : setCurrentColor("r");
+        // console.log(`changing current color from ${color} to ${currentColor}`)
     }
 
     // emits move to server to make sure both players' DOMS are properly updated
@@ -213,6 +219,27 @@ const ConnectFourTest = (props) => {
         return (
             <div className='connect-four'>
                 <h1 className='turn-display'><span className={currentColor === 'r' ? 'b-text' : 'r-text'}>{currentColor === 'r' ? 'Black' : 'Red'}</span> wins!</h1>
+                <div className='blue'>
+                        {board.map((row, i) => 
+                            <div className='row' key={i}>
+                                {row.map((cell, j) => 
+                                    <div key={j} className={`cell ${cell}`}></div>
+                                )}
+                            </div>
+                        )}
+                </div>
+                <div className='flex buttonDiv'>
+                    {/* have rematch clear board and winState for both players */}
+                    <button>Rematch</button>
+                    <button onClick={() => navigate('/')}>Find New Game</button>
+                </div>
+            </div>
+        )
+    }
+    else if(winState==='draw') {
+        return (
+            <div className='connect-four'>
+                <h1 className='turn-display'>Draw</h1>
                 <div className='blue'>
                         {board.map((row, i) => 
                             <div className='row' key={i}>
