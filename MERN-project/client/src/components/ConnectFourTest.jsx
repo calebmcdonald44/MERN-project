@@ -33,9 +33,9 @@ const ConnectFourTest = (props) => {
     useEffect(() => {
         socket.on("receive_player_data", receivePlayerData)
 
-        return () => [
+        return () => {
             socket.off("receive_player_data", receivePlayerData)
-        ]
+        }
     }, [opponentData])
 
     // assigning color upon joining room
@@ -43,7 +43,8 @@ const ConnectFourTest = (props) => {
         socket.on("color_assigned", (data) => {
             setPlayerColor(data)
             console.log(data)
-        })
+        }) 
+        
     }, [])
 
 
@@ -137,16 +138,17 @@ const ConnectFourTest = (props) => {
     // updating board with most recent move
     const makeMove = (column, color) => {
         let boardCopy = [...board]
+        console.log(board)
 
-        if (rematchBool === true) {
-            boardCopy = [["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],]
-            setRematchBool(false)
-        }
+        // if (rematchBool === true) {
+        //     boardCopy = [["-", "-", "-", "-", "-", "-", "-"],
+        //     ["-", "-", "-", "-", "-", "-", "-"],
+        //     ["-", "-", "-", "-", "-", "-", "-"],
+        //     ["-", "-", "-", "-", "-", "-", "-"],
+        //     ["-", "-", "-", "-", "-", "-", "-"],
+        //     ["-", "-", "-", "-", "-", "-", "-"],]
+        //     setRematchBool(false)
+        // }
         
         console.log(boardCopy)
         for(let i = 5; i >= 0; i--) {
@@ -161,7 +163,7 @@ const ConnectFourTest = (props) => {
     }
 
     const changeCurrentColor = (color) => {
-        color == "r" ? setCurrentColor("b") : setCurrentColor("r");
+        color === "r" ? setCurrentColor("b") : setCurrentColor("r");
         // console.log(`changing current color from ${color} to ${currentColor}`)
     }
 
@@ -201,16 +203,19 @@ const ConnectFourTest = (props) => {
     
     const rematch = () => {
         console.log("rematch")
+        console.log(board)
+
         setRematchBool(true)
-        const blankBoard = {
-            board: [["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],],
-            room: room
-        } 
+
+        // const blankBoard = {
+        //     board: [["-", "-", "-", "-", "-", "-", "-"],
+        //     ["-", "-", "-", "-", "-", "-", "-"],
+        //     ["-", "-", "-", "-", "-", "-", "-"],
+        //     ["-", "-", "-", "-", "-", "-", "-"],
+        //     ["-", "-", "-", "-", "-", "-", "-"],
+        //     ["-", "-", "-", "-", "-", "-", "-"],],
+        //     room: room
+        // } 
         setBoard([
             ["-", "-", "-", "-", "-", "-", "-"],
             ["-", "-", "-", "-", "-", "-", "-"],
@@ -219,27 +224,36 @@ const ConnectFourTest = (props) => {
             ["-", "-", "-", "-", "-", "-", "-"],
             ["-", "-", "-", "-", "-", "-", "-"],
         ])
+        console.log("new board" + board)
         setCurrentColor("r")
         
         // playerColor === "r" ? setPlayerColor("b") : setPlayerColor("r");
         setWinState(false);
         setDrawState(false);
         
-        // socket.emit("rematch", blankBoard)
+        // socket.emit("rematch", { room: room })
     }
 
-    // const receiveBoard = (data) => {
+    // if (rematchBool == false) {
+    //     socket.emit("rematch", { room: room })
+    //     console.log("sent board again")
+    // }
+    // setRematchBool(true)
+    // console.log(rematchBool)
+
+    // const receiveBoardHandler = (data) => {
     //     console.log(data.board)
     //     setBoard(data.board)
     // }
 
     // useEffect(() => {
-    //     socket.on("receive_board", receiveBoard)
+
+    //     socket.on("receive_board", receiveBoardHandler);
 
     //     return () => {
-    //         socket.off("receive_board", receiveBoard)
+    //         socket.off("receive_board", receiveBoardHandler)
     //     }
-    // })
+    // }, [socket])
 
     
     // shows a waiting page if no other opponent has joined
@@ -253,7 +267,7 @@ const ConnectFourTest = (props) => {
         if(winState === false && drawState === false) {
             return (
                 <div className='flex space-evenly'>
-                <p>{rematchBool === false ? "false" : "true"}</p>
+                {/* <p>{rematchBool === false ? "false" : "true"}</p> */}
                 <div className={`flex-column player-stats ${playerColor===currentColor ? 'selected' : 'zzzzz'}`}>
                     <h3 className={`${playerColor}-text`}>{userName}</h3>
                     <h1>W's</h1>
