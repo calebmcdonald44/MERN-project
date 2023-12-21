@@ -13,9 +13,10 @@ const ConnectFourTest = (props) => {
     const { socket, userName, room } = props;
 
     const [currentColor, setCurrentColor] = useState("r");
-    const [playerColor, setPlayerColor] = useState("")
-    const [ winState, setWinState ] = useState(false)
-    const [opponentData, setOpponentData] = useState("")
+    const [playerColor, setPlayerColor] = useState("");
+    const [ winState, setWinState ] = useState(false);
+    const [drawState, setDrawState] = useState(false);
+    const [opponentData, setOpponentData] = useState("");
 
     const navigate = useNavigate()
 
@@ -46,12 +47,19 @@ const ConnectFourTest = (props) => {
 
 
     const [winner, setWinner] = useState(false)
-    const [board, setBoard] = useState([["-", "-", "-", "-", "-", "-", "-"],
-                                        ["-", "-", "-", "-", "-", "-", "-"],
-                                        ["-", "-", "-", "-", "-", "-", "-"],
-                                        ["-", "-", "-", "-", "-", "-", "-"],
-                                        ["-", "-", "-", "-", "-", "-", "-"],
-                                        ["-", "-", "-", "-", "-", "-", "-"],
+    const [board, setBoard] = useState([
+        // ["-", "-", "-", "-", "-", "-", "-"],
+        // ["-", "-", "-", "-", "-", "-", "-"],
+        // ["-", "-", "-", "-", "-", "-", "-"],
+        // ["-", "-", "-", "-", "-", "-", "-"],
+        // ["-", "-", "-", "-", "-", "-", "-"],
+        // ["-", "-", "-", "-", "-", "-", "-"],
+        ["r", "r", "b", "r", "r", "b", "-"],
+        ["r", "r", "b", "r", "r", "b", "r"],
+        ["b", "b", "r", "b", "b", "r", "b"],
+        ["b", "b", "r", "b", "b", "r", "b"],
+        ["r", "r", "b", "r", "r", "b", "r"],
+        ["r", "r", "b", "r", "r", "b", "r"],
                                         ])
     
     // checking for any instances of 4 in a row
@@ -120,7 +128,7 @@ const ConnectFourTest = (props) => {
             }
         }
         if(blankCount === 0 && winState === false) {
-            winState("draw")
+            setDrawState(true);
         }
     }
     // updating board with most recent move
@@ -236,7 +244,7 @@ const ConnectFourTest = (props) => {
             </div>
         )
     }
-    else if(winState==='draw') {
+    else if(drawState === true) {
         return (
             <div className='connect-four'>
                 <h1 className='turn-display'>Draw</h1>
