@@ -17,6 +17,7 @@ const ConnectFourTest = (props) => {
     const [ winState, setWinState ] = useState(false);
     const [drawState, setDrawState] = useState(false);
     const [opponentData, setOpponentData] = useState("");
+    const [rematchBool, setRematchBool] = useState(false);
 
     const navigate = useNavigate()
 
@@ -43,7 +44,7 @@ const ConnectFourTest = (props) => {
             setPlayerColor(data)
             console.log(data)
         })
-    })
+    }, [])
 
 
     const [board, setBoard] = useState([
@@ -136,6 +137,18 @@ const ConnectFourTest = (props) => {
     // updating board with most recent move
     const makeMove = (column, color) => {
         let boardCopy = [...board]
+
+        if (rematchBool === true) {
+            boardCopy = [["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],]
+            setRematchBool(false)
+        }
+        
+        console.log(boardCopy)
         for(let i = 5; i >= 0; i--) {
             if(board[i][column]==='-') {
                 console.log(i, column)
@@ -155,25 +168,25 @@ const ConnectFourTest = (props) => {
     // emits move to server to make sure both players' DOMS are properly updated
     const sendMove = (column, color) => {
         if (currentColor == playerColor) {
+            makeMove(column, color)
             const moveData = {
                 room: room,
                 column: column,
                 color: color,
                 currentColor: currentColor
             }
-    
+            
             socket.emit("player_move", moveData);
-            makeMove(column, color)
             changeCurrentColor(currentColor)
         } else {
             console.log("Shut up")
         }
     }
-
+    
     // receives move from server
     const receiveMove = (data) => {
         console.log(data)
-        makeMove(data.column, data.color, data.currentColor)
+        makeMove(data.column, data.color)
         changeCurrentColor(data.currentColor)
     }
 
@@ -185,9 +198,19 @@ const ConnectFourTest = (props) => {
             socket.off("receive_move", receiveMove)
         }
     }, [])
-
+    
     const rematch = () => {
         console.log("rematch")
+        setRematchBool(true)
+        const blankBoard = {
+            board: [["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],],
+            room: room
+        } 
         setBoard([
             ["-", "-", "-", "-", "-", "-", "-"],
             ["-", "-", "-", "-", "-", "-", "-"],
@@ -197,11 +220,26 @@ const ConnectFourTest = (props) => {
             ["-", "-", "-", "-", "-", "-", "-"],
         ])
         setCurrentColor("r")
-
-        playerColor === "r" ? setPlayerColor("b") : setPlayerColor("r");
+        
+        // playerColor === "r" ? setPlayerColor("b") : setPlayerColor("r");
         setWinState(false);
         setDrawState(false);
+        
+        // socket.emit("rematch", blankBoard)
     }
+
+    // const receiveBoard = (data) => {
+    //     console.log(data.board)
+    //     setBoard(data.board)
+    // }
+
+    // useEffect(() => {
+    //     socket.on("receive_board", receiveBoard)
+
+    //     return () => {
+    //         socket.off("receive_board", receiveBoard)
+    //     }
+    // })
 
     
     // shows a waiting page if no other opponent has joined
@@ -211,10 +249,11 @@ const ConnectFourTest = (props) => {
             )
         }
         
-    // rendering game board if no one has won yet
-    if(winState === false && drawState === false) {
-        return (
-            <div className='flex space-evenly'>
+        // rendering game board if no one has won yet
+        if(winState === false && drawState === false) {
+            return (
+                <div className='flex space-evenly'>
+                <p>{rematchBool === false ? "false" : "true"}</p>
                 <div className={`flex-column player-stats ${playerColor===currentColor ? 'selected' : 'zzzzz'}`}>
                     <h3 className={`${playerColor}-text`}>{userName}</h3>
                     <h1>W's</h1>
