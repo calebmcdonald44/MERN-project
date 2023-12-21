@@ -43,7 +43,7 @@ const ConnectForm = (props) => {
         return (
         <>
             <div className='logIn'>
-                <h1>Create a username and input a room number!</h1>
+                <h1>Create a username and input a room id!</h1>
                 <div className='inputs flex-column'>
                     {errorsArray.map((error, idx) => {
                         return <p key={idx} style={{color: "red"}}>{error}</p>
