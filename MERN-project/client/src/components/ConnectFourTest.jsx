@@ -46,20 +46,21 @@ const ConnectFourTest = (props) => {
     })
 
 
-    const [winner, setWinner] = useState(false)
     const [board, setBoard] = useState([
-        // ["-", "-", "-", "-", "-", "-", "-"],
-        // ["-", "-", "-", "-", "-", "-", "-"],
-        // ["-", "-", "-", "-", "-", "-", "-"],
-        // ["-", "-", "-", "-", "-", "-", "-"],
-        // ["-", "-", "-", "-", "-", "-", "-"],
-        // ["-", "-", "-", "-", "-", "-", "-"],
-        ["r", "r", "b", "r", "r", "b", "-"],
-        ["r", "r", "b", "r", "r", "b", "r"],
-        ["b", "b", "r", "b", "b", "r", "b"],
-        ["b", "b", "r", "b", "b", "r", "b"],
-        ["r", "r", "b", "r", "r", "b", "r"],
-        ["r", "r", "b", "r", "r", "b", "r"],
+        ["-", "-", "-", "-", "-", "-", "-"],
+        ["-", "-", "-", "-", "-", "-", "-"],
+        ["-", "-", "-", "-", "-", "-", "-"],
+        ["-", "-", "-", "-", "-", "-", "-"],
+        ["-", "-", "-", "-", "-", "-", "-"],
+        ["-", "-", "-", "-", "-", "-", "-"],
+
+        // Board set up for testing draw state.
+        // ["r", "r", "b", "r", "r", "b", "-"],
+        // ["r", "r", "k", "r", "r", "k", "r"],
+        // ["b", "b", "r", "k", "k", "r", "b"],
+        // ["b", "b", "r", "b", "b", "r", "b"],
+        // ["r", "r", "k", "r", "r", "k", "r"],
+        // ["r", "r", "b", "r", "r", "b", "r"],
                                         ])
     
     // checking for any instances of 4 in a row
@@ -75,7 +76,7 @@ const ConnectFourTest = (props) => {
                     count = 1
                     blankCount += 1
                 }
-                else if(boardCopy[i][j] === boardCopy[i][j-1]){
+                else if(boardCopy[i][j] === boardCopy[i][j-1] && boardCopy[i][j] !== "-"){
                     count += 1
                     if(count === 4) {
                         console.log(`${boardCopy[i][j]} wins!`)
@@ -128,6 +129,7 @@ const ConnectFourTest = (props) => {
             }
         }
         if(blankCount === 0 && winState === false) {
+            console.log("Draw")
             setDrawState(true);
         }
     }
@@ -184,8 +186,33 @@ const ConnectFourTest = (props) => {
         }
     }, [])
 
+    const rematch = () => {
+        console.log("rematch")
+        setBoard([
+            ["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],
+            ["-", "-", "-", "-", "-", "-", "-"],
+        ])
+        setCurrentColor("r")
+
+        playerColor === "r" ? setPlayerColor("b") : setPlayerColor("r");
+        setWinState(false);
+        setDrawState(false);
+    }
+
+    
+    // shows a waiting page if no other opponent has joined
+    if (opponentData === "") {
+        return (
+            <h1>Waiting for opponent</h1>
+            )
+        }
+        
     // rendering game board if no one has won yet
-    if(winState === false) {
+    if(winState === false && drawState === false) {
         return (
             <div className='flex space-evenly'>
                 <div className={`flex-column player-stats ${playerColor===currentColor ? 'selected' : 'zzzzz'}`}>
@@ -223,7 +250,7 @@ const ConnectFourTest = (props) => {
         )
     // rendering rematch options once game has been completed
     }
-    else if(winState===true) {
+    else if(winState===true && drawState === false) {
         return (
             <div className='connect-four'>
                 <h1 className='turn-display'><span className={currentColor === 'r' ? 'b-text' : 'r-text'}>{currentColor === 'r' ? 'Black' : 'Red'}</span> wins!</h1>
@@ -238,7 +265,7 @@ const ConnectFourTest = (props) => {
                 </div>
                 <div className='flex buttonDiv'>
                     {/* have rematch clear board and winState for both players */}
-                    <button>Rematch</button>
+                    <button onClick={() => rematch()}>Rematch</button>
                     <button onClick={() => navigate('/')}>Find New Game</button>
                 </div>
             </div>
@@ -259,7 +286,7 @@ const ConnectFourTest = (props) => {
                 </div>
                 <div className='flex buttonDiv'>
                     {/* have rematch clear board and winState for both players */}
-                    <button>Rematch</button>
+                    <button onClick={() => rematch()}>Rematch</button>
                     <button onClick={() => navigate('/')}>Find New Game</button>
                 </div>
             </div>
