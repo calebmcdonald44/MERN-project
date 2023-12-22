@@ -231,6 +231,7 @@ span {
 }
 .player-stats {
   height: fit-content;
+  width: 180px;
   margin-top: 180px;
   text-align: center;
   color: white;
@@ -373,7 +374,7 @@ span {
 
 .chat-body {
   flex: 90%;
-  width: 100%;
+  width: 200px;
   align-items: flex-end;
   max-height: 180px;
 }
@@ -440,7 +441,7 @@ span {
   background-color: #43a047;
   margin-left: 66%;
   /* margin-left: 10%; */
-  width: 50px;
+  /* width: 100%; */
 }
 
 #other {
@@ -451,4 +452,5 @@ span {
 
 .scroll {
   overflow-y: scroll;
+  overflow-x:hidden;
 }

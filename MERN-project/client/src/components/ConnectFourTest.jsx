@@ -273,7 +273,7 @@ const ConnectFourTest = (props) => {
                 {/* <p>{rematchBool === false ? "false" : "true"}</p> */}
                 <div className={`flex-column player-stats ${playerColor===currentColor ? 'selected' : 'zzzzz'}`}>
                     <h3 className={`${playerColor}-text`}>{userName}</h3>
-                    <h1>W's</h1>
+                    <h1>0</h1>
                     <h3>wins</h3>
                 </div>
                 <div className='connect-four'>
@@ -299,7 +299,7 @@ const ConnectFourTest = (props) => {
                 </div>
                 <div className={`flex-column player-stats ${playerColor!==currentColor ? 'selected' : 'zzzzz'}`}>
                     <h3 className={`${playerColor === "r" ? "b" : "r"}-text`}>{opponentData}</h3>
-                    <h1>W's</h1>
+                    <h1>0</h1>
                     <h3>wins</h3>
                 </div>
             </div>

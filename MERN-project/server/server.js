@@ -55,24 +55,24 @@ io.on("connection", socket => {
         socket.to(data.room).emit("receive_move", data)
     })
 
-    // socket.on("rematch", (data) => {
-    //     console.log(data)
+    socket.on("rematch", (data) => {
+        console.log(data)
 
-    //     const updatedGameData = {
-    //         board : [
-    //             ["-", "-", "-", "-", "-", "-", "-"],
-    //             ["-", "-", "-", "-", "-", "-", "-"],
-    //             ["-", "-", "-", "-", "-", "-", "-"],
-    //             ["-", "-", "-", "-", "-", "-", "-"],
-    //             ["-", "-", "-", "-", "-", "-", "-"],
-    //             ["-", "-", "-", "-", "-", "-", "-"],
-    //         ],
-    //         room: data.room
-    //     };
+        const updatedGameData = {
+            board : [
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+                ["-", "-", "-", "-", "-", "-", "-"],
+            ],
+            room: data.room
+        };
 
 
-    //     socket.to(data.room).emit("receive_board", updatedGameData)
-    // })
+        socket.to(data.room).emit("receive_board", updatedGameData)
+    })
 
     // runs when a player disconnects from a room
     socket.on("disconnect", () => {

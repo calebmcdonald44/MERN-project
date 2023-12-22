@@ -54,7 +54,7 @@ const ConnectForm = (props) => {
                 <div className='button flex'>
                     <button className='logBtn' onClick={() => joinRoom()}>Enter Game</button>
                 </div>
-                <p style={{color: "white", marginLeft: "180px", marginTop: "50px"}}>Matchmaking coming soon! (Or when we get around to it.)</p>
+                {/* <p style={{color: "white", marginLeft: "180px", marginTop: "50px"}}>Matchmaking coming soon! (Or when we get around to it.)</p> */}
             </div>
         </>
         )
