@@ -3,7 +3,6 @@ import io from 'socket.io-client'
 import { useNavigate } from 'react-router-dom';
 
 // TO DO
-// - create "waiting..." page while waiting for other player to join
 // - rematch functionality
 // - fix chat scroll?/notification numbers
 // - profit $$$
@@ -17,7 +16,7 @@ const ConnectFourTest = (props) => {
     const [ winState, setWinState ] = useState(false);
     const [drawState, setDrawState] = useState(false);
     const [opponentData, setOpponentData] = useState("");
-    const [rematchBool, setRematchBool] = useState(false);
+    // const [rematchBool, setRematchBool] = useState(false);
 
     const navigate = useNavigate()
 
@@ -181,7 +180,7 @@ const ConnectFourTest = (props) => {
             socket.emit("player_move", moveData);
             changeCurrentColor(currentColor)
         } else {
-            console.log("Shut up")
+            console.log("It isn't your turn.")
         }
     }
     
@@ -201,38 +200,18 @@ const ConnectFourTest = (props) => {
         }
     }, [])
     
-    const rematch = () => {
-        console.log("rematch")
-        console.log(board)
 
-        setRematchBool(true)
-
-        // const blankBoard = {
-        //     board: [["-", "-", "-", "-", "-", "-", "-"],
-        //     ["-", "-", "-", "-", "-", "-", "-"],
-        //     ["-", "-", "-", "-", "-", "-", "-"],
-        //     ["-", "-", "-", "-", "-", "-", "-"],
-        //     ["-", "-", "-", "-", "-", "-", "-"],
-        //     ["-", "-", "-", "-", "-", "-", "-"],],
-        //     room: room
-        // } 
-        setBoard([
-            ["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],
-            ["-", "-", "-", "-", "-", "-", "-"],
-        ])
-        console.log("new board" + board)
-        setCurrentColor("r")
-        
-        // playerColor === "r" ? setPlayerColor("b") : setPlayerColor("r");
-        setWinState(false);
-        setDrawState(false);
-        
-        // socket.emit("rematch", { room: room })
-    }
+        // Rematch function
+        const rematch = () => {
+            // Reset game state
+            setBoard(Array(6).fill(Array(7).fill("-")));
+            setCurrentColor("r");
+            setWinState(false);
+            setDrawState(false);
+    
+            // Additional logic to emit rematch event to server if needed
+            socket.emit("rematch", { room: room })
+        };
 
     // if (rematchBool == false) {
     //     socket.emit("rematch", { room: room })
@@ -241,19 +220,19 @@ const ConnectFourTest = (props) => {
     // setRematchBool(true)
     // console.log(rematchBool)
 
-    // const receiveBoardHandler = (data) => {
-    //     console.log(data.board)
-    //     setBoard(data.board)
-    // }
+    const receiveBoardHandler = (data) => {
+        console.log("New board", data.board)
+        setBoard(data.board)
+    }
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     socket.on("receive_board", receiveBoardHandler);
+        socket.on("receive_board", receiveBoardHandler);
 
-    //     return () => {
-    //         socket.off("receive_board", receiveBoardHandler)
-    //     }
-    // }, [socket])
+        return () => {
+            socket.off("receive_board", receiveBoardHandler)
+        }
+    }, [])
 
     
     // shows a waiting page if no other opponent has joined
